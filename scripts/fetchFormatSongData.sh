@@ -2,7 +2,7 @@
 let BEARER
 
 get_new_bearer() {
-	BEARER=`curl -s -X "POST" -H "Authorization: Basic YzJjOTg0ZmQ0OGYxNGM4ZTlkNzhkYWFjOWZhMjYxZWE6NjE2MTg5NzBjZjgyNGZlZWE2NGYxYmRiMTk2OWQxZTM=" -d grant_type=client_credentials https://accounts.spotify.com/api/token | sed 's/^.*"access_token":"//' | sed 's/","token_type.*$//'`
+	BEARER=`curl -s -X "POST" -H "Authorization: Basic <TOKEN_OMITTED>" -d grant_type=client_credentials https://accounts.spotify.com/api/token | sed 's/^.*"access_token":"//' | sed 's/","token_type.*$//'`
 }
 
 let TMP_FILE
