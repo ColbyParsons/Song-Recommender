@@ -2,29 +2,9 @@ import requests
 import base64
 import json
 
-# curl --request GET \
-#   --url https://api.spotify.com/v1/tracks/5qzY4R9MDaHeNqIfQ6COTO \
-#   --header 'Authorization: Bearer BQB_TwnaSBHhF5kaTKwcBTK0b8BzW1tXvrnAmAnbNxwFiNjPV_fKub2toXzOJtB90PIK66Ki236B-pY2IbI' \
-#   --header 'Content-Type: application/json'
-
-# curl --request GET \
-#   --url https://api.spotify.com/v1/audio-features/5qzY4R9MDaHeNqIfQ6COTO \
-#   --header 'Authorization: Bearer BQB_TwnaSBHhF5kaTKwcBTK0b8BzW1tXvrnAmAnbNxwFiNjPV_fKub2toXzOJtB90PIK66Ki236B-pY2IbI' \
-#   --header 'Content-Type: application/json'
-
-# curl 
-# -X "POST" 
-# -H "Authorization: Basic YzJjOTg0ZmQ0OGYxNGM4ZTlkNzhkYWFjOWZhMjYxZWE6NjE2MTg5NzBjZjgyNGZlZWE2NGYxYmRiMTk2OWQxZTM=" 
-# -d grant_type=client_credentials https://accounts.spotify.com/api/token
-
-
 class httpState:
     def __init__(self):
-        self.authTokens = [
-            'b4a2d661229f4f198c6660f74c61e3dd:bb42d2f062864534a4523cda15a8ee7d',
-            '5ec85080826944ac938df2b872c71518:d255ba858f254be2912bc060a79044fe',
-            'dd022171b2d944dcb0102589f0947b4f:34f249915a1642e886490d9311d97daf'
-        ]
+        self.authTokens = [] # Auth tokens removed
         self.currentTokenIndex = 0
         self.currentBearer = self.getNewBearer()
 
