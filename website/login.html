@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <meta charset="utf-8" />
+    <title>Nütracks</title>
+    <style>
+        body {
+            margin:0;
+            width: 100%;
+            background-color: #ffffff;
+            font-family: "Courier New", "monospace";
+            text-align: center
+        }
+
+        #header {
+            font-weight: 500;
+            font-size: 50px;
+            margin-bottom: 40px;
+        }
+        a {
+            color:#000;
+            display: inline-block;
+            border-width: 3px;
+            font-family: "Courier New", "monospace";
+            padding: 10px 20px;
+            font-size: 30px;
+            margin-top: 40px;
+            border-color: rgb(118, 118, 118);
+            background-color: rgb(239, 239, 239);
+            border-style: outset;
+        }
+        a:hover {
+            cursor: pointer;
+            background-color: #dfdfdf
+        }
+        a:link {
+          text-decoration: none;
+        }
+
+        a:visited {
+          text-decoration: none;
+        }
+
+        a:hover {
+          text-decoration: none;
+        }
+
+        a:active {
+          text-decoration: none;
+        }
+
+    </style>
+
+</head>
+<body>
+        <h3 id="header">Welcome to Nütracks.</h3>
+        <p>Nütracks recommends Spotify songs based on your listening history using AI.</p>
+        <p>Login to spotify to find some new tracks!</p>
+        <a id="login">Login</a>
+    
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+
+var client_id = '21cd087f740f45b88794578a7819695d';
+
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+function requestUserAuth() {
+    var redirect_uri = 'https://plg.uwaterloo.ca/~caparsons/recommender.html';
+
+    var state = makeid(16);
+    localStorage.setItem("nutrack-id", state);
+    var scope = 'user-top-read user-library-read user-library-modify';
+
+    var url = 'https://accounts.spotify.com/authorize';
+    url += '?response_type=token';
+    url += '&client_id=' + encodeURIComponent(client_id);
+    url += '&scope=' + encodeURIComponent(scope);
+    url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
+    url += '&state=' + encodeURIComponent(state);
+
+    return url;
+}
+
+window.onload = function() {
+    document.getElementById("login").href = requestUserAuth();
+};
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <meta charset="utf-8" />
+    <title>Nütracks</title>
+    <style>
+        body {
+            margin:0;
+            width: 100%;
+            background-color: #ffffff;
+            font-family: "Courier New", "monospace";
+            text-align: center
+        }
+
+        #header {
+            font-weight: 500;
+            font-size: 50px;
+            margin-bottom: 40px;
+            display: none;
+        }
+
+        #error {
+            padding-top: 20px;
+            display: none;
+            position: fixed;
+            top:0px;
+            background-color: #fff;
+            width: 100%;
+            height:100%;
+        }
+
+        #tryagain {
+            color:#000;
+            display: inline-block;
+            border-width: 3px;
+            font-family: "Courier New", "monospace";
+            padding: 10px 20px;
+            font-size: 30px;
+            margin-top: 20px;
+            border-color: rgb(118, 118, 118);
+            background-color: rgb(239, 239, 239);
+            border-style: outset;
+            font-weight: 500;
+        }
+        #tryagain:hover {
+            cursor: pointer;
+            background-color: #dfdfdf
+        }
+        #tryagain:link {
+          text-decoration: none;
+        }
+        #tryagain:visited {
+          text-decoration: none;
+        }
+        #tryagain:hover {
+          text-decoration: none;
+        }
+        #tryagain:active {
+          text-decoration: none;
+        }
+
+        #playerBox {
+            display:none;
+            max-width:600px;
+            width:80%;
+        }
+
+        .player {
+            border-radius:12px;
+            height:80px;
+            width:80%;
+        }
+
+        #prev, #next, .save {
+            display: inline-block;
+            border-width: 3px;
+            font-size: 15px;
+            border-color: rgb(118, 118, 118);
+            background-color: rgb(239, 239, 239);
+            font-family: "Courier New", "monospace";
+            font-weight: 500;
+        }
+
+        .save {
+            float: right;
+            margin-top: 25px;
+            width: 73px;
+        }
+
+        #prev, #next {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #prev:hover, #next:hover, .save:hover {
+            cursor: pointer;
+            background-color: #dfdfdf
+        }
+
+        #prev {
+            float: left;
+            display:none;
+            margin-left: 6%;
+        }
+
+        #next {
+            float: right;
+            margin-right: 18%;
+        }
+
+        svg{
+            height: 800px;
+            position: absolute;
+            width: 100%;
+            left: 0px;
+            top: 100px;
+        }
+
+        #resultMsg {
+            margin-top: 50px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            #next {
+                margin-right: 22%;
+            }
+            #playerBox {
+                display:none;
+                max-width:100%;
+                width:98%;
+            }
+            .player {
+                width:70%;
+            }
+        }
+
+        #saveError {
+            display: none;
+        }
+
+    </style>
+
+</head>
+<body>
+    <svg id="anim"></svg>
+    <h3 id="header">Nütracks:</h3>
+    <p id="resultMsg">Fetching recommendations...</p>
+    <p id="delayMsg">This may take up to 20s...</p>
+    <p id="saveError">Something went wrong saving that track</p>
+    <div id="error">
+        <h3>Oh no!</h3>
+        <h3>Something went wrong!</h3>
+        <h3><a id="tryagain" href="https://plg.uwaterloo.ca/~caparsons/login.html">Try again</a></h3>
+    </div>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<div id="playerBox">
+    <div class="songBox"><iframe class='player' src="https://open.spotify.com/embed/track/2PsEMYGjL5Gnvv3kC8ZDUU?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><button onClick="onSave(0)" class="save">Save</button></div>
+    <div class="songBox"><iframe class='player' src="https://open.spotify.com/embed/track/2PsEMYGjL5Gnvv3kC8ZDUU?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><button onClick="onSave(1)" class="save">Save</button></div>
+    <div class="songBox"><iframe class='player' src="https://open.spotify.com/embed/track/2PsEMYGjL5Gnvv3kC8ZDUU?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><button onClick="onSave(2)" class="save">Save</button></div>
+    <div class="songBox"><iframe class='player' src="https://open.spotify.com/embed/track/2PsEMYGjL5Gnvv3kC8ZDUU?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><button onClick="onSave(3)" class="save">Save</button></div>
+    <div class="songBox"><iframe class='player' src="https://open.spotify.com/embed/track/2PsEMYGjL5Gnvv3kC8ZDUU?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><button onClick="onSave(4)" class="save">Save</button></div>
+    <div id="buttons">
+        <button onClick="prevPage()" id="prev">&lt; prev</button>
+        <button onClick="nextPage()" id="next">next &gt;</button>
+    </div>
+</div>
+<script>
+
+var newTracks = []
+var curr_page = 0;
+
+var pageSeen = Array(10).fill(false);
+pageSeen[0] = true;
+function prevPage() {
+    if (curr_page > 0){
+        curr_page--;
+        onReturnedRecs(newTracks, curr_page);
+    }
+    if (curr_page == 8)
+        document.getElementById('next').style.display = "inline-block";
+    if (curr_page == 0)
+        document.getElementById('prev').style.display = "none";
+    updateSaveButtons()
+}
+
+function nextPage() {
+    if (curr_page < 10){
+        curr_page++;
+        onReturnedRecs(newTracks, curr_page);
+    }
+    if (curr_page == 1)
+        document.getElementById('prev').style.display = "inline-block";
+    if (curr_page == 9)
+        document.getElementById('next').style.display = "none";
+    updateSaveButtons()
+    if (!pageSeen[curr_page]){
+        pageSeen[curr_page] = true;
+        fetch('https://holoclean.cs.uwaterloo.ca/page');
+    }
+}
+
+var buttonIsSaveState = Array(50).fill(true);
+function updateSaveButtons() {
+    let index = 0;
+    for (let element of document.getElementsByClassName("save")) {
+        if (buttonIsSaveState[curr_page * 5 + index]) {
+            element.textContent = "save";
+        } else {
+            element.textContent = "unsave";
+        }
+        index++;
+    }
+}
+
+function onSaveErr(index, isNotSaved) {
+    buttonIsSaveState[index] = isNotSaved;
+    updateSaveButtons();
+    document.getElementById('saveError').style.display = "inline-block";
+    setTimeout(() => {document.getElementById('saveError').style.display = "none"}, 10000);
+}
+
+
+function onSave(id) {
+    let index = curr_page * 5 + id;
+    if (buttonIsSaveState[index]) {
+        let request = new Request('https://api.spotify.com/v1/me/tracks', { 
+            method: 'PUT', 
+            body: JSON.stringify({ "ids" : [newTracks[index]] }),
+            headers: { 'Authorization': "Bearer " + token }
+        });
+        fetch(request)
+        .then( response => {
+            if (!response.ok)
+                throw new Error("Save request failed")
+        }).catch( err => {console.log(err); onSaveErr(index, false)})
+        buttonIsSaveState[index] = false;
+        updateSaveButtons();
+        fetch('https://holoclean.cs.uwaterloo.ca/save');
+    } else {
+        let request = new Request('https://api.spotify.com/v1/me/tracks', { 
+            method: 'DELETE', 
+            body: JSON.stringify({ "ids" : [newTracks[index]] }),
+            headers: { 'Authorization': "Bearer " + token }
+        });
+        fetch(request)
+        .then( response => {
+            if (!response.ok)
+                throw new Error("Unsave request failed")
+        }).catch( err => {console.log(err); onSaveErr(index, true)})
+        buttonIsSaveState[index] = true;
+        updateSaveButtons();
+    }
+}
+
+function onErr() {
+    document.getElementById('error').style.display = "block";
+}
+
+function htmlToElement(html) {
+    var template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function onReturnedRecs(trackUris, currPage) {
+    let iframeStart = "<iframe class='player' src=\"https://open.spotify.com/embed/track/";
+    let iframeEnd = "?utm_source=generator&theme=0\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\"></iframe>";
+
+    let index = 0;
+    for (let element of document.getElementsByClassName("songBox")) {
+        element.removeChild(element.firstChild);
+        element.prepend(htmlToElement(iframeStart + trackUris[index+currPage*5] + iframeEnd));
+        index++;
+    }
+    if (document.getElementById("anim")) {
+        document.getElementById("anim").remove()
+        document.getElementById('resultMsg').style.display = 'none';
+        document.getElementById('delayMsg').style.display = 'none';
+        document.getElementById('header').style.display = 'block';
+        document.getElementById('playerBox').style.display = "inline-block";
+    }
+}
+
+var token;
+window.onload = function() {
+    try {
+        if (window.location.hash == "" && localStorage.getItem("nutrack-token") != null){
+            token = localStorage.getItem("nutrack-token");
+        } else {
+            let paramList = window.location.hash.substr(1).split("&");
+            token = paramList[0].substr(13);
+            let state = paramList[3].substr(6);
+            var localState = localStorage.getItem("nutrack-id");
+            if (paramList.length != 4 || state != localState || window.location.hash == "") onErr();
+            localStorage.setItem("nutrack-token", token);
+            history.replaceState("", document.title, window.location.pathname, "");
+        }
+    } catch (error) {
+        onErr();
+    }
+
+    let request = new Request('https://holoclean.cs.uwaterloo.ca/rec', { 
+        method: 'POST', 
+        body: JSON.stringify({ "token" : token })
+    });
+    fetch(request)
+    .then( response => {
+        if (!response.ok)
+            throw new Error("Rec request failed")
+        return response.json(); 
+    }).then( json => {
+        newTracks = JSON.parse(json);
+        if (newTracks.length < 50)
+            throw new Error("Rec request failed")
+        onReturnedRecs(newTracks, 0)
+    }).catch( err => {console.log(err); onErr()})
+};
+
+var data = [];
+
+var margin = {"left":0,
+            "right":0,
+            "top":0,
+            "bottom":0};
+
+var body = d3.select("body");
+var svg = body.select("svg");
+var width = svg.node().getBoundingClientRect().width;
+var height = 455;
+var speed = 1;
+var radius = 3;
+var threshold = Math.pow(100,2);
+
+var numPoints = 40;
+
+if(width < 600){
+    numPoints = 20;
+}
+
+for(i = 0; i < numPoints; i++){
+    var angle = Math.random()*2*Math.PI;
+    var x = Math.random()*(width - 2*radius)+radius;
+    var y = Math.random()*(height - 2*radius)+radius;
+    var dx = speed*Math.cos(angle);
+    var dy = speed*Math.sin(angle);
+    var obj = {"x":x,"y":y,"angle":angle,"dx":dx,"dy":dy};
+    data.push(obj)
+}
+
+var circles = svg.append("g")
+                 .attr("fill","#2274A5")
+                 .selectAll("circle")
+                 .data(data)
+                 .enter().append("circle")
+                 .attr("cx", d => d.x)
+                 .attr("cy", d => d.y)
+                 .attr("r",radius);
+
+
+var lineGroup = svg.append("g");
+
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
+async function loop(timestamp) {
+    var dt = new Date();
+    var startTime = dt.getTime();
+    for(i = 0; i < numPoints; i++){
+        var point = data[i];
+        if(point.x + point.dx + radius > width || point.x + point.dx - radius< 0){
+            point.dx = -point.dx;
+        }
+        if(point.y + point.dy + radius > height || point.y + point.dy - radius < 0){
+            point.dy = -point.dy;
+        }
+        point.y += point.dy;
+        point.x += point.dx;
+    }
+    
+    circles.attr("cx",d => d.x)
+           .attr("cy", d => d.y);
+
+
+    lineGroup.selectAll("line")
+             .remove();
+
+    for(j = 0; j < numPoints; j++){
+        var point1 = data[j];
+        for(k = j; k < numPoints; k++){
+            if(k ==j) continue;
+            var point2 = data[k];
+            if(Math.pow(point1.x - point2.x,2) + Math.pow(point1.y - point2.y,2) < threshold){
+                lineGroup.append("line")
+                         .attr("x1",point1.x)
+                         .attr("x2",point2.x)
+                         .attr("y1",point1.y)
+                         .attr("y2",point2.y)
+                         .style("stroke-width",2)
+                         .style("stroke","#2274A5")
+                         .attr("fill", "none");
+
+            }
+        }
+    }
+
+    var et = new Date();
+    var endTime = et.getTime();
+
+    if(et - dt < 16){
+        await sleep(16 - (et- dt));
+    }
+
+
+    window.requestAnimationFrame(loop)
+}
+
+function redraw(){
+    width = svg.node().getBoundingClientRect().width;
+    for(i = 0; i < numPoints; i++){
+        if(data[i].x > width){
+            data[i].x = width-3;
+        }
+    }
+}
+
+window.addEventListener("resize", redraw);
+
+window.requestAnimationFrame(loop)
+
+</script>
+
+</body>
+</html>
